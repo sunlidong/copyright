@@ -4,22 +4,21 @@
 #!/usr/bin/env bash
 SLEEP_SECOND=5
 SLEEP_SECOND2=5
-SLEEP_SECOND1=20
+SLEEP_SECOND20=20
 
 
 
 
 ###  需要修改参数
-GO_CC_NAME=("AssetToChain_realty" "AssetToChain_increment")
-GO_CC_SRC_PATH=("github.com/chaincode/chaincodeRealty/dingchain"  "github.com/chaincode/chaincodeRealty/increment")
+GO_CC_NAME=("bqchain")
+GO_CC_SRC_PATH=("github.com/chaincode/bqchain")
 CC_VERSION="1.0"
-
 
 
 ### 参数
 CHANNEL_NAME="channelcopyright"
 DOMAIN_NAME="bqchain.com"
-ORDERER0_ADDRESS="orderer1.bqchain.com:7050"
+orderer1_ADDRESS="orderer1.bqchain.com:7050"
 #GO_CC_NAME=("AssetToChain" "IncrementChaincode")
 #GO_CC_SRC_PATH=("github.com/chaincode/dingchain"  "github.com/chaincode/increment")
 ORG_NAME=("org1" "org2")
@@ -102,12 +101,12 @@ get_peer_tls_cert(){
 
 get_orderer_tls_cert(){
     local org=$1
-    if [[ "$org" != "orderer0" ]] && [[ "$org" != "orderer1" ]]; then
+    if [[ "$org" != "orderer1" ]] && [[ "$org" != "orderer1" ]]; then
         echo "error org name $org"
         exit 1
     fi
 
-    echo "${ORDERER_TLS_PATH}ordererOrganizations/bqchain.com/orderers/orderer0.bqchain.com/tls/tlsintermediatecerts/tls-localhost-7055.pem"
+    echo "${ORDERER_TLS_PATH}ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/tlsintermediatecerts/tls-localhost-7055.pem"
 }
 
 ### 第一步：创建通道
@@ -130,7 +129,7 @@ channel_create() {
         -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt" \
         cli \
         peer channel create \
-                    -o $ORDERER0_ADDRESS \
+                    -o $orderer1_ADDRESS \
                     -c $channel \
                     -f ./channel-artifacts/channelcopyright.tx \
                     --tls true \
@@ -161,298 +160,24 @@ channel_join() {
      echo "********************$org...$peer join channel successful***************"
 }
 
-###
-install_and_instantiate_all() {
+install_and_instantiate() {
     local lang=$1
     local cc_name=($2)
     local cc_src_path=($3)
 
-    chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang \
-                      "org1"
+chaincode_install $CHANNEL_NAME  "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-    chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer1" \
-                      "8051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang\
-                      "org1"
+chaincode_install $CHANNEL_NAME  "org1" "peer0" "8051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang \
-                      "org2"
+chaincode_install $CHANNEL_NAME  "org1" "peer0" "9051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer1" \
-                      "6051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang\
-                      "org2"
-     ###
-     chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      ${cc_src_path[1]} \
-                      $lang \
-                      "org1"
+chaincode_install $CHANNEL_NAME  "org1" "peer0" "10051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-    chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer1" \
-                      "8051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      ${cc_src_path[1]} \
-                      $lang\
-                      "org1"
+### 实例化
+chaincode_instantiate   $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      ${cc_src_path[1]} \
-                      $lang \
-                      "org2"
-
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer1" \
-                      "6051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      ${cc_src_path[1]} \
-                      $lang\
-                      "org2"
-     ###
-
-    chaincode_instantiate   $CHANNEL_NAME \
-							"org1" \
-							"peer0" \
-							"7051" \
-							"server.crt" \
-							"server.key" \
-							"ca.crt" \
-							"orderer0" \
-							${cc_name[0]} \
-							${cc_src_path[0]} \
-							$lang\
-							"org1"
-	###
-	  chaincode_instantiate  $CHANNEL_NAME \
-							"org1" \
-							"peer0" \
-							"7051" \
-							"server.crt" \
-							"server.key" \
-							"ca.crt" \
-							"orderer0" \
-							${cc_name[1]} \
-							${cc_src_path[1]} \
-							$lang\
-							"org1"
-#
-##
-sleep $SLEEP_SECOND1
-#
-     chaincode_invoke $CHANNEL_NAME \
-                      "org1" \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      "org2" \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      '{"function":"","Args":[""]}'
-     ###
-     chaincode_invoke $CHANNEL_NAME \
-                      "org1" \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      "org2" \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      '{"function":"","Args":[""]}'
-}
-
-install_and_instantiate_one() {
-    local lang=$1
-    local cc_name=($2)
-    local cc_src_path=($3)
-
-    chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang \
-                      "org1"
-
-    chaincode_install $CHANNEL_NAME \
-                      "org1" \
-                      "peer1" \
-                      "8051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang\
-                      "org1"
-
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang \
-                      "org2"
-
-    chaincode_install $CHANNEL_NAME \
-                      "org2" \
-                      "peer1" \
-                      "6051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      ${cc_src_path[0]} \
-                      $lang\
-                      "org2"
-
-
-
-    chaincode_instantiate   $CHANNEL_NAME \
-							"org1" \
-							"peer0" \
-							"7051" \
-							"server.crt" \
-							"server.key" \
-							"ca.crt" \
-							"orderer0" \
-							${cc_name[0]} \
-							${cc_src_path[0]} \
-							$lang\
-							"org1"
-	###
-	  chaincode_instantiate  $CHANNEL_NAME \
-							"org1" \
-							"peer0" \
-							"7051" \
-							"server.crt" \
-							"server.key" \
-							"ca.crt" \
-							"orderer0" \
-							${cc_name[1]} \
-							${cc_src_path[1]} \
-							$lang\
-							"org1"
-#
-##
-sleep $SLEEP_SECOND1
-#
-     chaincode_invoke $CHANNEL_NAME \
-                      "org1" \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[0]} \
-                      "org2" \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      '{"function":"","Args":[""]}'
-     ###
-     chaincode_invoke $CHANNEL_NAME \
-                      "org1" \
-                      "org1" \
-                      "peer0" \
-                      "7051" \
-                      "server.crt" \
-                      "server.key" \
-                      "ca.crt" \
-                      "orderer0" \
-                      ${cc_name[1]} \
-                      "org2" \
-                      "org2" \
-                      "peer0" \
-                      "9051" \
-                      '{"function":"","Args":[""]}'
+### 初始化
+chaincode_invoke $CHANNEL_NAME "org1" "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} "org2" "org2" "peer0" "9051" '{"function":"","Args":[""]}'
 }
 
 ###
@@ -509,7 +234,7 @@ chaincode_instantiate() {
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org $peer $key)" \
         -e "CORE_PEER_TLS_ROOTCERT_FILE=$(get_peer_tls_cert $org $peer $rootcert)" \
         cli \
-        peer chaincode instantiate -o orderer0.bqchain.com:7050 --tls true --cafile $ORDERER_CAFILE -C $CHANNEL_NAME -n $cc_name -l golang -v 1.0 -c '{"Args":[""]}' -P 'AND ('\''Org1MSP.member'\'','\''Org2MSP.member'\'')'
+        peer chaincode instantiate -o orderer1.bqchain.com:7050 --tls true --cafile $ORDERER_CAFILE -C $CHANNEL_NAME -n $cc_name -l golang -v 1.0 -c '{"Args":[""]}' -P 'OR ('\''Org1MSP.member'\'','\''Org2MSP.member'\'')'
      echo "*******************************init chaincode is successful*********************************"
 }
 
@@ -539,24 +264,24 @@ chaincode_invoke() {
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org1 $peer $key)" \
         -e "CORE_PEER_TLS_ROOTCERT_FILE=$(get_peer_tls_cert $org1 $peer $rootcert)" \
         cli \
-peer chaincode invoke -o orderer0.bqchain.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer0.bqchain.com/tls/ca.crt -C $CHANNEL_NAME -n $cc_name --peerAddresses peer0.org1.bqchain.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt --peerAddresses peer0.org2.bqchain.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt -c '{"Args":[""]}'
+peer chaincode invoke -o orderer1.bqchain.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/ca.crt -C $CHANNEL_NAME -n $cc_name --peerAddresses peer0.org1.bqchain.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt --peerAddresses peer0.org2.bqchain.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt -c '{"Args":[""]}'
 
     echo "**********************************invoke chaincode*******$cc_name************************************************"
 }
 
 
-## create channel
+### 创建通道
 channel_create $CHANNEL_NAME
 
-# Join peer0.org1.bqchain.com to the channel.
+### 节点加入通道
 channel_join $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt"
 channel_join $CHANNEL_NAME "org1" "peer1" "8051" "server.crt" "server.key" "ca.crt"
 channel_join $CHANNEL_NAME "org2" "peer0" "9051" "server.crt" "server.key" "ca.crt"
 channel_join $CHANNEL_NAME "org2" "peer1" "10051" "server.crt" "server.key" "ca.crt"
 
 
-## 安装链码
-#install_and_instantiate_one "golang" "${GO_CC_NAME[*]}" "${GO_CC_SRC_PATH[*]}"
+### 安装链码
+install_and_instantiate "golang" "${GO_CC_NAME[*]}" "${GO_CC_SRC_PATH[*]}"
 echo
 echo " _____   _   _   ____   "
 echo "| ____| | \ | | |  _ \  "
