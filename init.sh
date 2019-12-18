@@ -24,8 +24,8 @@ ORDERER0_ADDRESS="orderer0.bqchain.com:7050"
 #GO_CC_SRC_PATH=("github.com/chaincode/dingchain"  "github.com/chaincode/increment")
 ORG_NAME=("org1" "org2")
 CC_VERSION="1.0"
-TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/"
-ORDERER_TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/"
+TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/"
+ORDERER_TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/"
 ORDERER_CAFILE="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/msp/tlscacerts/tlsca.bqchain.com-cert.pem"
 ### 开始
 echo
@@ -539,7 +539,7 @@ chaincode_invoke() {
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org1 $peer $key)" \
         -e "CORE_PEER_TLS_ROOTCERT_FILE=$(get_peer_tls_cert $org1 $peer $rootcert)" \
         cli \
-peer chaincode invoke -o orderer0.bqchain.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/ordererOrganizations/bqchain.com/orderers/orderer0.bqchain.com/tls/ca.crt -C $CHANNEL_NAME -n $cc_name --peerAddresses peer0.org1.bqchain.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt --peerAddresses peer0.org2.bqchain.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt -c '{"Args":[""]}'
+peer chaincode invoke -o orderer0.bqchain.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer0.bqchain.com/tls/ca.crt -C $CHANNEL_NAME -n $cc_name --peerAddresses peer0.org1.bqchain.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt --peerAddresses peer0.org2.bqchain.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt -c '{"Args":[""]}'
 
     echo "**********************************invoke chaincode*******$cc_name************************************************"
 }
@@ -550,21 +550,10 @@ channel_create $CHANNEL_NAME
 
 # Join peer0.org1.bqchain.com to the channel.
 channel_join $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt"
-  echo "#################################################################"
-  echo "### channel_join   is  org1 peer0                             ###"
-  echo "#################################################################"
 channel_join $CHANNEL_NAME "org1" "peer1" "8051" "server.crt" "server.key" "ca.crt"
-  echo "#################################################################"
-  echo "### channel_join   is  org1 peer1                             ###"
-  echo "#################################################################"
 channel_join $CHANNEL_NAME "org2" "peer0" "9051" "server.crt" "server.key" "ca.crt"
-  echo "#################################################################"
-  echo "### channel_join   is  org2 peer0                             ###"
-  echo "#################################################################"
 channel_join $CHANNEL_NAME "org2" "peer1" "6051" "server.crt" "server.key" "ca.crt"
-  echo "#################################################################"
-  echo "### channel_join   is  org2 peer1                             ###"
-  echo "#################################################################"
+
 
 ## 安装链码
 #install_and_instantiate_one "golang" "${GO_CC_NAME[*]}" "${GO_CC_SRC_PATH[*]}"
