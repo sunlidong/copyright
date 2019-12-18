@@ -1,44 +1,23 @@
 #!/usr/bin/env bash
 
+###  参数 ------------------------------------------------------
 
-#!/usr/bin/env bash
-SLEEP_SECOND=5
-SLEEP_SECOND2=5
-SLEEP_SECOND20=20
-
-
-
-
-###  需要修改参数
+## 链码名称
 GO_CC_NAME=("bqchain")
+## 链码路径
 GO_CC_SRC_PATH=("github.com/chaincode/bqchain")
+## 链码版本
 CC_VERSION="1.0"
-
-
-### 参数
+## 通道名称
 CHANNEL_NAME="channelcopyright"
 DOMAIN_NAME="bqchain.com"
 orderer1_ADDRESS="orderer1.bqchain.com:7050"
-#GO_CC_NAME=("AssetToChain" "IncrementChaincode")
-#GO_CC_SRC_PATH=("github.com/chaincode/dingchain"  "github.com/chaincode/increment")
 ORG_NAME=("org1" "org2")
-CC_VERSION="1.0"
 TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/"
 ORDERER_TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/"
 ORDERER_CAFILE="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/msp/tlscacerts/tlsca.bqchain.com-cert.pem"
-### 开始
-echo
-echo " ____    _____      _      ____    _____ "
-echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
-echo "\___ \    | |     / _ \   | |_) |   | |  "
-echo " ___) |   | |    / ___ \  |  _ <    | |  "
-echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
-echo
-echo "Build your  Server......."
-echo
-###
 
-###
+## 工具函数
 get_mspid() {
     local org=$1
     case "$org" in
@@ -109,7 +88,6 @@ get_orderer_tls_cert(){
     echo "${ORDERER_TLS_PATH}ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/tlsintermediatecerts/tls-localhost-7055.pem"
 }
 
-### 第一步：创建通道
 channel_create() {
     local channel=$1
     local org="org1"
@@ -136,7 +114,6 @@ channel_create() {
                     --cafile  $ORDERER_CAFILE
 }
 
-###
 channel_join() {
     local channel=$1
     local org=$2
@@ -181,7 +158,6 @@ sleep 20
 chaincode_invoke $CHANNEL_NAME "org1" "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} "org2" "org2" "peer0" "9051" '{"function":"","Args":[""]}'
 }
 
-###
 chaincode_install() {
     local channel=$1
     local org=$2
@@ -212,7 +188,6 @@ chaincode_install() {
         -p $cc_src_path
 }
 
-###
 chaincode_instantiate() {
     local channel=$1
     local org=$2
@@ -239,7 +214,6 @@ chaincode_instantiate() {
      echo "*******************************init chaincode is successful*********************************"
 }
 
-###
 chaincode_invoke() {
     local channel=$1
     local org1=$2
@@ -279,6 +253,23 @@ chaincode_invoke() {
     echo "**********************************invoke chaincode*******$cc_name************************************************"
 }
 
+
+###  start --------------------------------------------------------------------------------------------
+echo
+echo " ____    _____      _      ____    _____ "
+echo "/ ___|  |_   _|    / \    |  _ \  |_   _|"
+echo "\___ \    | |     / _ \   | |_) |   | |  "
+echo " ___) |   | |    / ___ \  |  _ <    | |  "
+echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
+echo
+echo "Build your  Server......."
+echo
+###
+
+## 启动容器
+docker-compose -f docker-compose-etcdraft2.yaml up -d
+
+sleep 5
 
 ### 创建通道
 channel_create $CHANNEL_NAME

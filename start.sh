@@ -5,8 +5,8 @@
 cryptogen generate --config=./crypto-config.yaml
 
 ### 生成配置文件
+./generate.sh
 
-configtxgen -profile BqchainMultiNodeEtcdRaft   -outputBlock  ./channel-artifacts/genesis.block
+### 生成网络
+./init.sh
 
-
-###

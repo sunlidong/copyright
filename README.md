@@ -1,12 +1,5 @@
 # copyright
 
 
-
-### 生成证书文件
-
-```
-cryptogen generate --config=./crypto-config.yaml
-```
-
-
-### 生成配置文件
+### 注意事项：
+1. 重启网络需要删除对应目录文件：channel-artifacts目录,crypto-config目录
