@@ -216,7 +216,7 @@ Orderer: &OrdererDefaults
     OrdererType: etcdraft
 
     Addresses:
-        - orderer.bqchain.com:7050
+        - orderer1.bqchain.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -312,7 +312,7 @@ Profiles:
             Capabilities:
                 <<: *ApplicationCapabilities
 
-    SampleMultiNodeEtcdRaft:
+    BqchainMultiNodeEtcdRaft:
         <<: *ChannelDefaults
         Capabilities:
             <<: *ChannelCapabilities
@@ -323,8 +323,8 @@ Profiles:
                 Consenters:
                 - Host: orderer.bqchain.com
                   Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer.bqchain.com/tls/server.crt
+                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
                 - Host: orderer2.bqchain.com
                   Port: 8050
                   ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer2.bqchain.com/tls/server.crt
