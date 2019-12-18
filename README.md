@@ -5,6 +5,8 @@
 1. 重启网络需要删除对应目录文件：channel-artifacts目录,crypto-config目录
 2. clear.sh 清除容器以及挂在卷,用于清空网络
 3. 注意版本
+4. 所用版本：1.4.4 
+5. 使用raft排序共识
 
 
 
