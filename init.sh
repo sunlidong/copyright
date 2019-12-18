@@ -26,7 +26,7 @@ ORG_NAME=("org1" "org2")
 CC_VERSION="1.0"
 TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/"
 ORDERER_TLS_PATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-channel-artifacts/"
-ORDERER_CAFILE= "/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/msp/tlscacerts/tlsca.bqchain.com-cert.pem"
+ORDERER_CAFILE="/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/msp/tlscacerts/tlsca.bqchain.com-cert.pem"
 ### 开始
 echo
 echo " ____    _____      _      ____    _____ "
@@ -35,7 +35,7 @@ echo "\___ \    | |     / _ \   | |_) |   | |  "
 echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
-echo "Build your DRC Server......."
+echo "Build your  Server......."
 echo
 ###
 
@@ -134,7 +134,7 @@ channel_create() {
                     -c $channel \
                     -f ./channel-artifacts/channelcopyright.tx \
                     --tls true \
-                    --cafile $ORDERER_CAFILE
+                    --cafile  $ORDERER_CAFILE
 }
 
 ###
