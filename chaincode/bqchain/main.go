@@ -63,8 +63,9 @@ func (rc *RightChaincode) Invoke(stub shim.ChaincodeStubInterface) peer.Response
 		}
 		return shim.Success([]byte(right))
 
-	case "InvokeChain":
+	case "regist1":
 		return shim.Success([]byte("ok"))
+
 	default:
 		return shim.Error("Unsupported function")
 	}
