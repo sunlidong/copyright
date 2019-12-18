@@ -10,7 +10,7 @@ CHANNEL_NAME="channelcopyright"
 sleep 1
 
 # generate genesis block for orderer
-configtxgen -profile BqchainMultiNodeEtcdRaft   -outputBlock  ./config/genesis.block
+configtxgen -profile BqchainMultiNodeEtcdRaft   -outputBlock  ./channel-artifacts/genesis.block
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1

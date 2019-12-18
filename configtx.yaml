@@ -217,6 +217,10 @@ Orderer: &OrdererDefaults
 
     Addresses:
         - orderer1.bqchain.com:7050
+        - orderer2.bqchain.com:7050
+        - orderer3.bqchain.com:7050
+        - orderer4.bqchain.com:7050
+        - orderer5.bqchain.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
