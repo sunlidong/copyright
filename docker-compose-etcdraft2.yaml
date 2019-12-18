@@ -165,11 +165,8 @@ services:
       - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
       - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     extra_hosts:
-      - "orderer1.bqchain.com:172.18.0.6"
-      - "orderer2.bqchain.com:172.18.0.6"
-      - "orderer3.bqchain.com:172.18.0.6"
-      - "orderer4.bqchain.com:172.18.0.6"
-      - "orderer5.bqchain.com:172.18.0.6"
+      - "orderer1.bqchain.com:127.0.0.1"
+
     depends_on:
       - orderer1.bqchain.com
       - orderer2.bqchain.com
