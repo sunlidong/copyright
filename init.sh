@@ -176,6 +176,7 @@ chaincode_install $CHANNEL_NAME  "org2" "peer1" "10051" "server.crt" "server.key
 ### 实例化
 chaincode_instantiate   $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
+sleep 20
 ### 初始化
 chaincode_invoke $CHANNEL_NAME "org1" "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} "org2" "org2" "peer0" "9051" '{"function":"","Args":[""]}'
 }
