@@ -26,7 +26,7 @@ services:
       file: base/peer-base.yaml
       service: orderer-base
     environment:
-      - ORDERER_GENERAL_LISTENPORT=8050
+      - ORDERER_GENERAL_LISTENPORT=7050
     container_name: orderer1.bqchain.com
     networks:
       - byfn
