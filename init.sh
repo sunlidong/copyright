@@ -19,7 +19,7 @@ CC_VERSION="1.0"
 ### 参数
 CHANNEL_NAME="channelcopyright"
 DOMAIN_NAME="bqchain.com"
-ORDERER0_ADDRESS="orderer0.bqchain.com:7050"
+ORDERER0_ADDRESS="orderer1.bqchain.com:7050"
 #GO_CC_NAME=("AssetToChain" "IncrementChaincode")
 #GO_CC_SRC_PATH=("github.com/chaincode/dingchain"  "github.com/chaincode/increment")
 ORG_NAME=("org1" "org2")
