@@ -264,8 +264,17 @@ chaincode_invoke() {
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org1 $peer $key)" \
         -e "CORE_PEER_TLS_ROOTCERT_FILE=$(get_peer_tls_cert $org1 $peer $rootcert)" \
         cli \
-peer chaincode invoke -o orderer1.bqchain.com:7050 --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/ca.crt -C $CHANNEL_NAME -n $cc_name --peerAddresses peer0.org1.bqchain.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt --peerAddresses peer0.org2.bqchain.com:9051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt -c '{"Args":[""]}'
-
+        peer chaincode invoke \
+        -o orderer1.bqchain.com:7050 \
+        --tls true \
+        --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/msp/tlscacerts/tlsca.bqchain.com-cert.pem \
+        -C channelcopyright \
+        -n bqchain \
+        --peerAddresses peer0.org1.bqchain.com:7051 \
+        --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/ca.crt \
+        --peerAddresses peer0.org2.bqchain.com:9051 \
+        --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.bqchain.com/peers/peer0.org2.bqchain.com/tls/ca.crt \
+        -c '{"Args":["InvokeChain"]}'
     echo "**********************************invoke chaincode*******$cc_name************************************************"
 }
 
