@@ -552,7 +552,7 @@ channel_create $CHANNEL_NAME
 channel_join $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt"
 channel_join $CHANNEL_NAME "org1" "peer1" "8051" "server.crt" "server.key" "ca.crt"
 channel_join $CHANNEL_NAME "org2" "peer0" "9051" "server.crt" "server.key" "ca.crt"
-channel_join $CHANNEL_NAME "org2" "peer1" "6051" "server.crt" "server.key" "ca.crt"
+channel_join $CHANNEL_NAME "org2" "peer1" "10051" "server.crt" "server.key" "ca.crt"
 
 
 ## 安装链码
