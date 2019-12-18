@@ -123,7 +123,7 @@ channel_create() {
 
     docker exec \
         -e "CORE_PEER_LOCALMSPID=Org1MSP" \
-        -e "CORE_PEER_MSPchannel-artifactsPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/users/Admin@org1.bqchain.com/msp" \
+        -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/users/Admin@org1.bqchain.com/msp" \
         -e "CORE_PEER_ADDRESS=peer0.org1.bqchain.com:7051" \
         -e "CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/server.crt" \
         -e "CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.bqchain.com/peers/peer0.org1.bqchain.com/tls/server.key" \
@@ -149,7 +149,7 @@ channel_join() {
     ###
     docker exec \
         -e "CORE_PEER_LOCALMSPID=$(get_mspid $org)"\
-        -e "CORE_PEER_MSPchannel-artifactsPATH=$(get_msp_channel-artifacts_path $org $peer)"\
+        -e "CORE_PEER_MSPCONFIGPATH=$(get_msp_channel-artifacts_path $org $peer)"\
         -e "CORE_PEER_ADDRESS=$(get_peer_address $org $peer $port)"\
         -e "CORE_PEER_TLS_CERT_FILE=$(get_peer_tls_cert $org $peer $cert)"\
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org $peer $key)"\
@@ -473,7 +473,7 @@ chaincode_install() {
 
     docker exec \
         -e "CORE_PEER_LOCALMSPID=$(get_mspid $org)" \
-        -e "CORE_PEER_MSPchannel-artifactsPATH=$(get_msp_channel-artifacts_path $org $peer)" \
+        -e "CORE_PEER_MSPCONFIGPATH=$(get_msp_channel-artifacts_path $org $peer)" \
         -e "CORE_PEER_ADDRESS=$(get_peer_address $org $peer $port)" \
         -e "CORE_PEER_TLS_CERT_FILE=$(get_peer_tls_cert $org $peer $cert)" \
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org $peer $key)" \
@@ -503,7 +503,7 @@ chaincode_instantiate() {
 
     docker exec \
         -e "CORE_PEER_LOCALMSPID=$(get_mspid $org)" \
-        -e "CORE_PEER_MSPchannel-artifactsPATH=$(get_msp_channel-artifacts_path $org $peer)" \
+        -e "CORE_PEER_MSPCONFIGPATH=$(get_msp_channel-artifacts_path $org $peer)" \
         -e "CORE_PEER_ADDRESS=$(get_peer_address $org $peer $port)" \
         -e "CORE_PEER_TLS_CERT_FILE=$(get_peer_tls_cert $org $peer $cert)" \
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org $peer $key)" \
@@ -533,7 +533,7 @@ chaincode_invoke() {
 
     docker exec \
         -e "CORE_PEER_LOCALMSPID=$(get_mspid $org1)" \
-        -e "CORE_PEER_MSPchannel-artifactsPATH=$(get_msp_channel-artifacts_path $Org1 $peer)" \
+        -e "CORE_PEER_MSPCONFIGPATH=$(get_msp_channel-artifacts_path $Org1 $peer)" \
         -e "CORE_PEER_ADDRESS=$(get_peer_address $org1 $peer $port)" \
         -e "CORE_PEER_TLS_CERT_FILE=$(get_peer_tls_cert $org1 $peer $cert)" \
         -e "CORE_PEER_TLS_KEY_FILE=$(get_peer_tls_cert $org1 $peer $key)" \
