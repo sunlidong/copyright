@@ -167,11 +167,11 @@ install_and_instantiate() {
 
 chaincode_install $CHANNEL_NAME  "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-chaincode_install $CHANNEL_NAME  "org1" "peer0" "8051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
+chaincode_install $CHANNEL_NAME  "org1" "peer1" "8051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
 chaincode_install $CHANNEL_NAME  "org1" "peer0" "9051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
-chaincode_install $CHANNEL_NAME  "org1" "peer0" "10051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
+chaincode_install $CHANNEL_NAME  "org1" "peer1" "10051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
 
 ### 实例化
 chaincode_instantiate   $CHANNEL_NAME "org1" "peer0" "7051" "server.crt" "server.key" "ca.crt" "orderer1" ${cc_name[0]} ${cc_src_path[0]} $lang "org1"
