@@ -78,15 +78,6 @@ get_peer_tls_cert(){
 
 }
 
-get_orderer_tls_cert(){
-    local org=$1
-    if [[ "$org" != "orderer1" ]] && [[ "$org" != "orderer1" ]]; then
-        echo "error org name $org"
-        exit 1
-    fi
-
-    echo "${ORDERER_TLS_PATH}ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/tlsintermediatecerts/tls-localhost-7055.pem"
-}
 
 channel_create() {
     local channel=$1
