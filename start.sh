@@ -10,3 +10,5 @@ cryptogen generate --config=./crypto-config.yaml
 ### 生成网络
 ./init.sh
 
+
+
