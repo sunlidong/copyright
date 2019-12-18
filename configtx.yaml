@@ -211,42 +211,41 @@ Application: &ApplicationDefaults
 #
 ################################################################################
 Orderer: &OrdererDefaults
-
-    # Orderer Type: The orderer implementation to start
     OrdererType: etcdraft
-
+    EtcdRaft:
+        Consenters:
+            - Host: orderer.bqchain.com
+                  Port: 7050
+                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
+                      - Host: orderer2.bqchain.com
+                        Port: 8050
+                        ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer2.bqchain.com/tls/server.crt
+                        ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer2.bqchain.com/tls/server.crt
+                      - Host: orderer3.bqchain.com
+                        Port: 9050
+                        ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer3.bqchain.com/tls/server.crt
+                        ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer3.bqchain.com/tls/server.crt
+                      - Host: orderer4.bqchain.com
+                        Port: 10050
+                        ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer4.bqchain.com/tls/server.crt
+                        ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer4.bqchain.com/tls/server.crt
+                      - Host: orderer5.bqchain.com
+                        Port: 11050
+                        ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer5.bqchain.com/tls/server.crt
+                        ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer5.bqchain.com/tls/server.crt
     Addresses:
-        - orderer1.bqchain.com:7050
-        - orderer2.bqchain.com:7050
-        - orderer3.bqchain.com:7050
-        - orderer4.bqchain.com:7050
-        - orderer5.bqchain.com:7050
-
-    # Batch Timeout: The amount of time to wait before creating a batch
+        - orderer.bqchain.com:7050
+        - orderer2.bqchain.com:8050
+        - orderer3.bqchain.com:9050
+        - orderer4.bqchain.com:10050
+        - orderer5.bqchain.com:11050
     BatchTimeout: 2s
-
-    # Batch Size: Controls the number of messages batched into a block
     BatchSize:
-
-        # Max Message Count: The maximum number of messages to permit in a batch
-        MaxMessageCount: 10
-
-        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
-        # the serialized messages in a batch.
+        MaxMessageCount: 200
         AbsoluteMaxBytes: 99 MB
-
-        # Preferred Max Bytes: The preferred maximum number of bytes allowed for
-        # the serialized messages in a batch. A message larger than the preferred
-        # max bytes will result in a batch larger than preferred max bytes.
         PreferredMaxBytes: 512 KB
-
-    # Organizations is the list of orgs which are defined as participants on
-    # the orderer side of the network
     Organizations:
-
-    # Policies defines the set of policies at this level of the config tree
-    # For Orderer policies, their canonical path is
-    #   /Channel/Orderer/<PolicyName>
     Policies:
         Readers:
             Type: ImplicitMeta
@@ -257,8 +256,6 @@ Orderer: &OrdererDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
-        # BlockValidation specifies what signatures must be included in the block
-        # from the orderer for the peer to validate it.
         BlockValidation:
             Type: ImplicitMeta
             Rule: "ANY Writers"
@@ -322,46 +319,16 @@ Profiles:
             <<: *ChannelCapabilities
         Orderer:
             <<: *OrdererDefaults
-            OrdererType: etcdraft
-            EtcdRaft:
-                Consenters:
-                - Host: orderer.bqchain.com
-                  Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer1.bqchain.com/tls/server.crt
-                - Host: orderer2.bqchain.com
-                  Port: 8050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer2.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer2.bqchain.com/tls/server.crt
-                - Host: orderer3.bqchain.com
-                  Port: 9050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer3.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer3.bqchain.com/tls/server.crt
-                - Host: orderer4.bqchain.com
-                  Port: 10050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer4.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer4.bqchain.com/tls/server.crt
-                - Host: orderer5.bqchain.com
-                  Port: 11050
-                  ClientTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer5.bqchain.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/bqchain.com/orderers/orderer5.bqchain.com/tls/server.crt
-            Addresses:
-                - orderer.bqchain.com:7050
-                - orderer2.bqchain.com:8050
-                - orderer3.bqchain.com:9050
-                - orderer4.bqchain.com:10050
-                - orderer5.bqchain.com:11050
-
             Organizations:
-            - *OrdererOrg
+                - *OrdererOrg
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *OrdererOrg
+                - <<: *OrdererOrg
         Consortiums:
             SampleConsortium:
                 Organizations:
-                - *Org1
-                - *Org2
+                    - *Org1
+                    - *Org2
